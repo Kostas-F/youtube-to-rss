@@ -12,7 +12,7 @@ To get a channels RSS feed:
 
 1. Go to the channel you want to follow
 2. Find the channel ID
-  - If the url looks like this: `https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw` then the ID is the random string after channell (ie UCYO_jab_esuFRV4b17AJtAw)
+  - If the url looks like this: `https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw` then the ID is the random string after channelb (ie UCYO_jab_esuFRV4b17AJtAw)
   - If the url has a username like this `https://www.youtube.com/user/USERNAME` you can find their ID by
       * Viewing the page source (Ctrl+U)
       * Search the page (Ctrl+F) for `external_id` or `channel_id` or simply `youtube/channel/` and copy the string that follows.
