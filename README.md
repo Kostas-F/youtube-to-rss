@@ -16,7 +16,7 @@ To get a channels RSS feed:
   - If the url has a username like this `https://www.youtube.com/user/USERNAME` you can find their ID by
       * Viewing the page source (Ctrl+U)
       * Search the page (Ctrl+F) for `external_id` or `channel_id` or simply `youtube/channel/` and copy the string that follows.
-2. Point to the channel with this url: `https://www.youtube.com/feeds/videos.xml?channel_id=THE_CHANNEL_ID_HERE`
+2. Point to the channel with this url: <br> `https://www.youtube.com/feeds/videos.xml?channel_id=THE_CHANNEL_ID_HERE`
 
 The above is a valid RSS feed you can add to the reader of your choice. You can also follow by user via this link `https://www.youtube.com/feeds/videos.xml?user=USERNAME` and by playlist <br> `https://www.youtube.com/feeds/videos.xml?playlist_id=YOUR_YOUTUBE_PLAYLIST_NUMBER` though there *may* be a querry limit that breaks this, I haven't tested it myself.
 
