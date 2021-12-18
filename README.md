@@ -18,7 +18,7 @@ To get a channels RSS feed:
       * Search the page (Ctrl+F) for `external_id` or `channel_id` or simply `youtube/channel/` and copy the string that follows.
 2. Point to the channel with this url: <br> `https://www.youtube.com/feeds/videos.xml?channel_id=THE_CHANNEL_ID_HERE`
 
-The above is a valid RSS feed you can add to the reader of your choice. You can also follow by user via this link `https://www.youtube.com/feeds/videos.xml?user=USERNAME` and by playlist <br> `https://www.youtube.com/feeds/videos.xml?playlist_id=YOUR_YOUTUBE_PLAYLIST_NUMBER` though there *may* be a querry limit that breaks this, I haven't tested it myself.
+The above is a valid RSS feed you can add to the reader of your choice. You can also follow by user via this link <br> `https://www.youtube.com/feeds/videos.xml?user=USERNAME` and by playlist <br> `https://www.youtube.com/feeds/videos.xml?playlist_id=YOUR_YOUTUBE_PLAYLIST_NUMBER` though there *may* be a querry limit that breaks this, I haven't tested it myself.
 
 ## How to get a list of your subscriptions
 There also used to be a button to extract your subsciptions to RSS but it is no longer there. The only ways I found to get a list of subscribed channels are: 
@@ -47,7 +47,9 @@ Sadly the easiest and least complicated option is number 4. This script will wor
 ## What does it do ?
 This script is mostly user interaction fluff. Basically it looks for a .csv file with a collumn of channel IDs and another of channel names. It then creates the rss links as described above and finally formats them as a basic opml/xml file to import them in a reader. By default it places each channel in its own folder. If this is not the desired behaviour there is a function called `add_channel_nofolder` commmented out in the code. To use that one and have all the channels in a single folder comment out the `add_channel` function, uncommnent the `add_channel_nofolder` and rename it to `add_channel`. (I may add this as a choice in user dialog in the future)
 
-#### Plaintext links just in case
+<details>
+           <summary>Plaintext links just in case</summary>
+           <p>
 subscription list         - https://www.youtube.com/feed/channels
 
 google takeout            - https://takeout.google.com/
@@ -55,3 +57,5 @@ google takeout            - https://takeout.google.com/
 google developer console  - https://console.developers.google.com/
 
 python installation guide - https://realpython.com/installing-python/
+             </p>
+         </details>
