@@ -1,5 +1,5 @@
 import os,csv
-# Initializing program variables
+# Initializing script variables
 channel_ids   = []
 channel_names = []
 loop          = True
