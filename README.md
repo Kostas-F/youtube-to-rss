@@ -46,6 +46,7 @@ Sadly the easiest and least complicated option is number 4. This script will wor
 
 ## What does it do ?
 This script is mostly user interaction fluff. Basically it looks for a .csv file with a collumn of channel IDs and another of channel names. It then creates the rss links as described above and finally formats them as a basic opml/xml file to import them in a reader. By default it places each channel in its own folder. If this is not the desired behaviour there is a function called `add_channel_nofolder` commmented out in the code. To use that one and have all the channels in a single folder comment out the `add_channel` function, uncommnent the `add_channel_nofolder` and rename it to `add_channel`. (I may add this as a choice in user dialog in the future)
+____
 
 <details>
            <summary>Plaintext links just in case</summary>
