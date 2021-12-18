@@ -32,7 +32,7 @@ Sadly the easiest and least complicated option is number 4. This script will wor
 
 
 ## How to use this script
-<img align="right" src="./scriptuse.gif">
+<img align="right" src="./scriptuse.gif" title="Best case scenario">
 <p align="left">
   
 1. Download the script to a directory you have permissions to write to. (eg Desktop or Downloads should work)
