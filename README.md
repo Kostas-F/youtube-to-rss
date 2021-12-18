@@ -18,7 +18,7 @@ To get a channels RSS feed:
       * Search the page (Ctrl+F) for `external_id` or `channel_id` or simply `youtube/channel/` and copy the string that follows.
 2. Point to the channel with this url: `https://www.youtube.com/feeds/videos.xml?channel_id=THE_CHANNEL_ID_HERE`
 
-The above is a valid RSS feed you can add to the reader of your choice. You can also follow by user via this link `https://www.youtube.com/feeds/videos.xml?user=USERNAME` and by playlist `https://www.youtube.com/feeds/videos.xml?playlist_id=YOUR_YOUTUBE_PLAYLIST_NUMBER` though there *may* be a querry limit that breaks this, I haven't tested it myself.
+The above is a valid RSS feed you can add to the reader of your choice. You can also follow by user via this link `https://www.youtube.com/feeds/videos.xml?user=USERNAME` and by playlist <br> `https://www.youtube.com/feeds/videos.xml?playlist_id=YOUR_YOUTUBE_PLAYLIST_NUMBER` though there *may* be a querry limit that breaks this, I haven't tested it myself.
 
 ## How to get a list of your subscriptions
 There also used to be a button to extract your subsciptions to RSS but it is no longer there. The only ways I found to get a list of subscribed channels are: 
@@ -32,10 +32,17 @@ Sadly the easiest and least complicated option is number 4. This script will wor
 
 
 ## How to use this script
+<img align="right" src="./scriptuse.gif">
+<p align="left">
+  
 1. Download the script to a directory you have permissions to write to. (eg Desktop or Downloads should work)
-2. Run the script by running the command `python3 youtube-to-rss.py` in your terminal. You need to have [python3 installed](https://realpython.com/installing-python/).
+2. Run the script by running the command <br> `python3 youtube-to-rss.py` in your terminal. You need to have [python3 installed](https://realpython.com/installing-python/).
 3. Point the script to a .csv file with the youtube channels you want to track via RSS by following the instrucitons.
 4. Import the resulting .opml file to the RSS reader of your choice.
+  
+</p>
+
+<br>
 
 ## What does it do ?
 This script is mostly user interaction fluff. Basically it looks for a .csv file with a collumn of channel IDs and another of channel names. It then creates the rss links as described above and finally formats them as a basic opml/xml file to import them in a reader. By default it places each channel in its own folder. If this is not the desired behaviour there is a function called `add_channel_nofolder` commmented out in the code. To use that one and have all the channels in a single folder comment out the `add_channel` function, uncommnent the `add_channel_nofolder` and rename it to `add_channel`. (I may add this as a choice in user dialog in the future)
