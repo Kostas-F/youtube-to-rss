@@ -1,5 +1,5 @@
 import os,csv
-from ./youtube-to-rss.py import printRed
+from youtubeToRSS import printRed
 loop       = True
 create = False
 # Script main loop
