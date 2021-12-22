@@ -1,17 +1,21 @@
 import os,csv
+
 # Initializing script variables
 channel_ids   = []
 channel_names = []
 loop          = True
+
 # Some lists to check user input
 yes = ["Y","y","YES","yes",""] #empty string to use as default when pressing enter.
 no  = ["N","n","NO","no"]
+
 # Script default values for navigating file, *assuming file from google takeout*.
 default    = True
 adding     = False
 header     = True
 ID_index   = 0
 NAME_index = 2
+
 # Default filename to create. Used in user dialog.
 opmlfilename="youtube-subscriptions.opml"
 
