@@ -36,10 +36,12 @@ Sadly the easiest and least complicated option is number 4. This script will wor
 <p align="left">
   
 1. Download the script to a directory you have permissions to write to. (eg Desktop or Downloads should work)
-2. Run the script by running the command <br> `python3 youtube-to-rss.py` in your terminal. You need to have [python3 installed](https://realpython.com/installing-python/).
+2. Run the script by running the command <br> `python3 youtubeToRSS.py` in your terminal. You need to have [python3 installed](https://realpython.com/installing-python/).
 3. Point the script to a .csv file with the youtube channels you want to track via RSS by following the instrucitons.
 4. Import the resulting .opml file to the RSS reader of your choice.
-  
+
+(The gif uses the old scipt name.)
+
 </p>
 
 <br>
