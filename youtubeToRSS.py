@@ -20,7 +20,7 @@ NAME_index = 2
 opmlfilename="youtube-subscriptions.opml"
 
 # Use ANSI to print red text for errors
-def printRed(text): print("\033[91m {}\033[00m" .format(text))
+def printRed(text): print("\033[91m {}\033[00m".format(text))
 
 # Checking for xml reserved characters
 def check_reserved(name):
