@@ -39,7 +39,7 @@ def preamble(file):
   file.write("<opml version=\"2.0\">\n<body>\n<outline text=\"Youtube Subscriptions\" title=\"Youtube Subscriptions\">\n") 
 
 # Adding a youtube channel feed with its own subfolder
-def add_channel(chanel_name,file):
+def add_channel(chanel_name,file,channel_ids,channel_names):
   file.write("<outline title=\""+chanel_name+"\">\n")
   file.write("<outline type=\"rss\" xmlUrl='https://www.youtube.com/feeds/videos.xml?channel_id="+channel_ids[channel_names.index(chanel_name)]+"'/>\n")
   file.write("</outline>\n")  
@@ -162,7 +162,7 @@ def run():
     channel_ids.append(line[ID_index])
     channel_names.append(check_reserved(line[NAME_index]))
   file.close()
-
+  
   # Creating or adding to the opml file.
   loop=True
   innerloop=True
@@ -209,7 +209,7 @@ def run():
     # Create a new file from the csv data
     preamble(rssfile)
     for channel in channel_names:
-      add_channel(channel,rssfile)
+      add_channel(channel,rssfile,channel_ids,channel_names)
     afterword(rssfile)
     rssfile.close()
     print("Created a .opml file from the channels in the .csv \n"+os.path.dirname(os.path.abspath(__file__))+"/"+opmlfilename+"\nYou can now add the channels to an rss reader.")
@@ -228,7 +228,7 @@ def run():
       for i in range(0,linenum-1):
         newrssfile.write(oldrss[i])
       for channel in channel_names:
-        add_channel(channel,newrssfile)
+        add_channel(channel,newrssfile,channel_ids,channel_names)
       afterword(newrssfile)
     os.remove("youtube-subscriptions.opml")
     os.rename("youtube-subscriptions.opml.tmp", "youtube-subscriptions.opml")
