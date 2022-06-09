@@ -1,4 +1,4 @@
-import os,csv,urllib.request
+import os, csv, urllib.request
 import youtubeToRSS as ytRSS
 
 # Use a given link to lookup channel names by looking for a specific spot in the 
@@ -53,6 +53,7 @@ def run():
 	#Initializing script variables
 	loop   = True
 	create = False
+	header =['Channel-ID','blank','Channel-Name']
 
 	# Some lists to check user input
 	yes = ["Y","y","YES","yes",""] #empty string to use as default when pressing enter.
@@ -95,10 +96,15 @@ def run():
 				print(e)
 				ytRSS.printRed("exiting")
 				exit()
+	csvwriter = csv.writer(csvfile, delimiter=",", quotechar='"')
+	csvwriter.writerow(header)
+	
+
 	loop=True
 	video=False
 	channelLink=""
 	channelID=""
+	skip=False
 	while loop:
 		 try:
 		 	channel= input("Enter youtube link. [Enter to stop adding.]\n")
@@ -108,12 +114,16 @@ def run():
 		 	ytRSS.printRed("exiting")
 		 	exit()
 		 else:
-		 	if(channel==""): loop=False
+		 	skip=False
+		 	if(channel==""): 
+		 		loop=False
+		 		skip=True
 		 	channel_split=channel.split("/")
+		 	
 		 	if channel_split[len(channel_split)-2] == "channel":
 		 		print("Detected as channel link")
 		 		channelID = crawlForChannelID(channel)
-		 		channelName = ytRSS.check_reserved(ncrawlForUserName(channel))
+		 		channelName = ytRSS.check_reserved(crawlForUserName(channel))
 		 	elif channel_split[len(channel_split)-2] == "c" or channel_split[len(channel_split)-2] == "user" :
 		 		print("Detected as user link")
 		 		channelID = crawlForChannelID(channel)
@@ -123,8 +133,15 @@ def run():
 		 		video=True
 		 		channelName = ytRSS.check_reserved(crawlForUserName(channel,video))
 		 		channelID = videoLink2channelID(channelName.replace(" ", ""))
+		 	elif channel!="":
+		 		ytRSS.printRed("Unable to parse link.\n" )
+		 		print("Please enter youtube channel link or youtube video link.")
+		 		skip=True
+		 	
+		 	if(not skip):
+		 		csvwriter.writerow([channelID,"",channelName] )
+		 		print("Added "+ channelName+" and ID: "+channelID+" to "+csvfilename)
 
-		 	print("Added "+ channelName+" and ID: "+channelID+" to "+csvfilename)
 
 if __name__== "__main__":
 	run()
