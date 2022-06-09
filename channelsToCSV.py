@@ -99,15 +99,68 @@ def run():
 	csvwriter = csv.writer(csvfile, delimiter=",", quotechar='"')
 	csvwriter.writerow(header)
 	
+	loop=True
+	buntchOfLinksFile=False
+	while loop:
+		print("Add channels from file? [Y/n] \n Should be one link per row of a channel/user or video.")
+		try:
+			create_new = input("")
+		except Exception as e:
+			ytRSS.printRed("Unexpected error.")
+			print(e)
+			ytRSS.printRed("exiting")
+			exit()
+		else:
+			if create_new in quit:
+				exit()
+			elif create_new not in (yes+no):
+				ytRSS.printRed("Please enter y/n.")
+			elif create_new in yes:
+				buntchOfLinksFile = True
+				loop=False
+			else:
+				loop=False
+	loop=True
+
+	if(buntchOfLinksFile):
+		while loop:
+		    print("Enter youtube link list filename. If the file is in a different directory press q.")
+		    # Limiting imput to current director to handle errors.
+		    # Also assuming no familiarity with python or scripts and where they run etc.
+		    # Or thats what I intend anyway
+		    buntchOfLinks = os.path.dirname(os.path.abspath(__file__)) +"/"+ input( os.path.dirname(os.path.abspath(__file__))+"/")
+		    if buntchOfLinks==os.path.dirname(os.path.abspath(__file__)) +"/"+ "q" :
+		      print("Enter full path to subscription csv. q to exit")
+		      buntchOfLinks = input("")
+		    if(buntchOfLinks=="q"):
+		      exit()
+		    try:
+		      linkFile = open(buntchOfLinks, mode ='r')
+		    except FileNotFoundError as fileNotFound:
+		      printRed("Invalid file name.")
+		    except Exception as e:
+		      printRed(e)
+		    else:
+		      loop=False
 
 	loop=True
 	video=False
 	channelLink=""
 	channelID=""
 	skip=False
+
 	while loop:
 		 try:
-		 	channel= input("Enter youtube link. [Enter to stop adding.]\n")
+		 	if(not buntchOfLinksFile):
+		 		channel= input("Enter youtube link. [Enter to stop adding.]\n")
+		 	else:
+		 		channel=linkFile.readline()
+		 		if not channel:
+		 			print('End of File!')
+		 			linkFile.close()
+		 			csvfile.close()
+		 			exit()
+
 		 except Exception as e:
 		 	ytRSS.printRed("Unexpected Error!")
 		 	print(e)
@@ -117,6 +170,7 @@ def run():
 		 	skip=False
 		 	if(channel==""): 
 		 		loop=False
+		 		csvfile.close()
 		 		skip=True
 		 	channel_split=channel.split("/")
 		 	
@@ -145,3 +199,4 @@ def run():
 
 if __name__== "__main__":
 	run()
+	print("ytchannelsToFollow")
