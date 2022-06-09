@@ -60,66 +60,47 @@ def run():
 	no  = ["N","n","NO","no"]
 	quit =["Q","q"]
 	# Script main loop
-	while loop:
-		print("Create new youtube channel csv? [Y/n] ")
-		try:
-			create_new = input("")
-		except Exception as e:
-			ytRSS.printRed("Unexpected error.")
-			print(e)
-			ytRSS.printRed("exiting")
-			exit()
-		else:
-			if create_new in quit:
-				exit()
-			elif create_new not in (yes+no):
-				ytRSS.printRed("Please enter y/n.")
-			elif create_new in yes:
-				create = True
-				loop=False
-			else:
-				loop=False
 	loop=True
 
 	csvfilename="ytchannelsToFollow.csv"
 	count=0
-	if create:
-		while loop:
-			try:
-				csvfile=open(csvfilename,"x")
-				loop=False
-			except FileExistsError as fileExists:
-				count+=1
-				csvfilename="ytchannelsToFollow_"+str(count)+".csv"	
-			except Exception as e:
-				ytRSS.printRed("Unexpected Error!")
-				print(e)
-				ytRSS.printRed("exiting")
-				exit()
+	while loop:
+		try:
+			csvfile=open(csvfilename,"x")
+			loop=False
+		except FileExistsError as fileExists:
+			count+=1
+			csvfilename="ytchannelsToFollow_"+str(count)+".csv"	
+		except Exception as e:
+			ytRSS.printRed("Unexpected Error!")
+			print(e)
+			ytRSS.printRed("exiting")
+			exit()
 	csvwriter = csv.writer(csvfile, delimiter=",", quotechar='"')
 	csvwriter.writerow(header)
 	
 	loop=True
 	buntchOfLinksFile=False
 	while loop:
-		print("Add channels from file? [Y/n] \n Should be one link per row of a channel/user or video.")
+		print("Add channels from file? [Y/n] \n(Should be one link per row of a channel/user or video.)")
 		try:
-			create_new = input("")
+			inputfile = input("")
 		except Exception as e:
 			ytRSS.printRed("Unexpected error.")
 			print(e)
 			ytRSS.printRed("exiting")
 			exit()
 		else:
-			if create_new in quit:
+			if inputfile in quit:
 				exit()
-			elif create_new not in (yes+no):
+			elif inputfile not in (yes+no):
 				ytRSS.printRed("Please enter y/n.")
-			elif create_new in yes:
+			elif inputfile in yes:
 				buntchOfLinksFile = True
 				loop=False
 			else:
 				loop=False
+	
 	loop=True
 
 	if(buntchOfLinksFile):
@@ -199,4 +180,3 @@ def run():
 
 if __name__== "__main__":
 	run()
-	print("ytchannelsToFollow")
