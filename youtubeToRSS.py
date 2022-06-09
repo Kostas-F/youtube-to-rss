@@ -1,8 +1,5 @@
 import os,csv
 
-# Default filename to create. Used in user dialog.
-opmlfilename="youtube-subscriptions.opml"
-
 # Use ANSI to print red text for errors
 def printRed(text): print("\033[91m {}\033[00m".format(text))
 
@@ -57,7 +54,8 @@ def run():
   channel_ids   = []
   channel_names = []
   loop          = True
-
+  # Default filename to create. Used in user dialog.
+  opmlfilename="youtube-subscriptions.opml"
   # Some lists to check user input
   yes = ["Y","y","YES","yes",""] #empty string to use as default when pressing enter.
   no  = ["N","n","NO","no"]
@@ -102,7 +100,7 @@ def run():
         default=False
         loop=False
       elif(dftl_chk in yes):
-        print("Assuming the file has a header, channel ids are in collumn 0 and names in collumn 3.")
+        print("Assuming the file has a header, channel ids are in collumn 0 and names in collumn 2.")
         loop=False
       else:
         printRed("Please enter Y or n.")  
