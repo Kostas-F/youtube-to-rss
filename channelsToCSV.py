@@ -22,6 +22,33 @@ def crawlForUserName(link,video=False):
 		char=messOstring[target_ind]
 	return channel_name
 
+def crawlForChannelID(channelLink):
+	key='type=\"application/rss+xml\" title=\"RSS\" href=\"https://www.youtube.com/feeds/videos.xml?channel_id='
+	with urllib.request.urlopen(channelLink) as response:
+   		messOstring = response.read().decode('utf-8')
+	target_ind = messOstring.index(key)+len(key)-1
+	char=""
+	channelID=""
+	while char!='\"':
+		channelID=channelID+char
+		target_ind+=1
+		char=messOstring[target_ind]
+	return channelID
+
+def videoLink2channelID(channelName):
+	searchLink = 'https://www.youtube.com/results?search_query='+channelName
+	key='\"channelRenderer\":{\"channelId\":\"'
+	with urllib.request.urlopen(searchLink) as response:
+   		messOstring = response.read().decode('utf-8')
+	target_ind = messOstring.index(key)+len(key)-1
+	char=""
+	channelID=""
+	while char!='\"':
+		channelID=channelID+char
+		target_ind+=1
+		char=messOstring[target_ind]
+	return channelID
+
 def run():
 	#Initializing script variables
 	loop   = True
@@ -70,6 +97,8 @@ def run():
 				exit()
 	loop=True
 	video=False
+	channelLink=""
+	channelID=""
 	while loop:
 		 try:
 		 	channel= input("Enter youtube link. [Enter to stop adding.]\n")
@@ -83,15 +112,19 @@ def run():
 		 	channel_split=channel.split("/")
 		 	if channel_split[len(channel_split)-2] == "channel":
 		 		print("Detected as channel link")
-		 		channelName = crawlForUserName(channel)
+		 		channelID = crawlForChannelID(channel)
+		 		channelName = ytRSS.check_reserved(ncrawlForUserName(channel))
 		 	elif channel_split[len(channel_split)-2] == "c" or channel_split[len(channel_split)-2] == "user" :
 		 		print("Detected as user link")
-		 		channelName = crawlForUserName(channel)
+		 		channelID = crawlForChannelID(channel)
+		 		channelName = ytRSS.check_reserved(crawlForUserName(channel))
 		 	elif "watch" in channel_split[len(channel_split)-1]:
 		 		print("Detected as video link")
 		 		video=True
-		 		channelName = crawlForUserName(channel,video)
-		 	print("Added "+ channelName+" to "+csvfilename)
+		 		channelName = ytRSS.check_reserved(crawlForUserName(channel,video))
+		 		channelID = videoLink2channelID(channelName.replace(" ", ""))
+
+		 	print("Added "+ channelName+" and ID: "+channelID+" to "+csvfilename)
 
 if __name__== "__main__":
 	run()
