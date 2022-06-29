@@ -1,8 +1,5 @@
 import os,csv
 
-# Default filename to create. Used in user dialog.
-opmlfilename="youtube-subscriptions.opml"
-
 # Use ANSI to print red text for errors
 def printRed(text): print("\033[91m {}\033[00m".format(text))
 
@@ -39,7 +36,7 @@ def preamble(file):
   file.write("<opml version=\"2.0\">\n<body>\n<outline text=\"Youtube Subscriptions\" title=\"Youtube Subscriptions\">\n") 
 
 # Adding a youtube channel feed with its own subfolder
-def add_channel(chanel_name,file):
+def add_channel(chanel_name,file,channel_ids,channel_names):
   file.write("<outline title=\""+chanel_name+"\">\n")
   file.write("<outline type=\"rss\" xmlUrl='https://www.youtube.com/feeds/videos.xml?channel_id="+channel_ids[channel_names.index(chanel_name)]+"'/>\n")
   file.write("</outline>\n")  
@@ -57,7 +54,8 @@ def run():
   channel_ids   = []
   channel_names = []
   loop          = True
-
+  # Default filename to create. Used in user dialog.
+  opmlfilename="youtube-subscriptions.opml"
   # Some lists to check user input
   yes = ["Y","y","YES","yes",""] #empty string to use as default when pressing enter.
   no  = ["N","n","NO","no"]
@@ -102,7 +100,7 @@ def run():
         default=False
         loop=False
       elif(dftl_chk in yes):
-        print("Assuming the file has a header, channel ids are in collumn 0 and names in collumn 3.")
+        print("Assuming the file has a header, channel ids are in collumn 0 and names in collumn 2.")
         loop=False
       else:
         printRed("Please enter Y or n.")  
@@ -159,10 +157,13 @@ def run():
   if header:
     next(csvFile)
   for line in csvFile:
-    channel_ids.append(line[ID_index])
-    channel_names.append(check_reserved(line[NAME_index]))
+    try:
+      channel_ids.append(line[ID_index])
+      channel_names.append(check_reserved(line[NAME_index]))
+    except IndexError as outBounds:
+      printRed("Collumn index out of range. Assuming EOF and empty line/s.")
   file.close()
-
+  
   # Creating or adding to the opml file.
   loop=True
   innerloop=True
@@ -209,7 +210,7 @@ def run():
     # Create a new file from the csv data
     preamble(rssfile)
     for channel in channel_names:
-      add_channel(channel,rssfile)
+      add_channel(channel,rssfile,channel_ids,channel_names)
     afterword(rssfile)
     rssfile.close()
     print("Created a .opml file from the channels in the .csv \n"+os.path.dirname(os.path.abspath(__file__))+"/"+opmlfilename+"\nYou can now add the channels to an rss reader.")
@@ -228,7 +229,7 @@ def run():
       for i in range(0,linenum-1):
         newrssfile.write(oldrss[i])
       for channel in channel_names:
-        add_channel(channel,newrssfile)
+        add_channel(channel,newrssfile,channel_ids,channel_names)
       afterword(newrssfile)
     os.remove("youtube-subscriptions.opml")
     os.rename("youtube-subscriptions.opml.tmp", "youtube-subscriptions.opml")
