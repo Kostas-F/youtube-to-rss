@@ -157,8 +157,11 @@ def run():
   if header:
     next(csvFile)
   for line in csvFile:
-    channel_ids.append(line[ID_index])
-    channel_names.append(check_reserved(line[NAME_index]))
+    try:
+      channel_ids.append(line[ID_index])
+      channel_names.append(check_reserved(line[NAME_index]))
+    except IndexError as outBounds:
+      printRed("Collumn index out of range. Assuming EOF and empty line/s.")
   file.close()
   
   # Creating or adding to the opml file.
