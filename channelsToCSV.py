@@ -149,31 +149,31 @@ def run():
 		 	exit()
 		 else:
 		 	skip=False
+		 	channelID_index=3
 		 	if(channel==""): 
 		 		loop=False
 		 		csvfile.close()
 		 		skip=True
 		 	channel_split=channel.split("/")
-		 	linkID_index=3
-		 	if channel_split[linkID_index] == "channel":
-		 		print("Detected as channel link")
-		 		channelID = crawlForChannelID(channel)
-		 		channelName = ytRSS.check_reserved(crawlForUserName(channel))
-		 	elif channel_split[linkID_index] == "c" or channel_split[linkID_index] == "user" :
-		 		print("Detected as user link")
-		 		channelID = crawlForChannelID(channel)
-		 		channelName = ytRSS.check_reserved(crawlForUserName(channel))
-		 	elif "watch" in channel_split[len(channel_split)-1]:
-		 		print("Detected as video link")
-		 		video=True
-		 		channelName = ytRSS.check_reserved(crawlForUserName(channel,video))
-		 		channelID = videoLink2channelID(channelName.replace(" ", ""))
-		 	elif channel!="":
-		 		ytRSS.printRed("Unable to parse link.\n" )
-		 		print("Please enter youtube channel link or youtube video link.")
-		 		skip=True
 		 	
 		 	if(not skip):
+			 	if channel_split[channelID_index] == "channel":
+			 		print("Detected as channel link")
+			 		channelID = crawlForChannelID(channel)
+			 		channelName = ytRSS.check_reserved(crawlForUserName(channel))
+			 	elif channel_split[channelID_index] == "c" or channel_split[channelID_index] == "user" :
+			 		print("Detected as user link")
+			 		channelID = crawlForChannelID(channel)
+			 		channelName = ytRSS.check_reserved(crawlForUserName(channel))
+			 	elif "watch" in channel_split[channelID_index]:
+			 		print("Detected as video link")
+			 		video=True
+			 		channelName = ytRSS.check_reserved(crawlForUserName(channel,video))
+			 		channelID = videoLink2channelID(channelName.replace(" ", ""))
+			 	elif channel!="":
+			 		ytRSS.printRed("Unable to parse link.\n" )
+			 		print("Please enter youtube channel link or youtube video link.")
+			 		skip=True
 		 		csvwriter.writerow([channelID,"",channelName] )
 		 		print("Added "+ channelName+" and ID: "+channelID+" to "+csvfilename)
 
