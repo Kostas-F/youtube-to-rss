@@ -154,12 +154,12 @@ def run():
 		 		csvfile.close()
 		 		skip=True
 		 	channel_split=channel.split("/")
-		 	
-		 	if channel_split[len(channel_split)-2] == "channel":
+		 	linkID_index=3
+		 	if channel_split[linkID_index] == "channel":
 		 		print("Detected as channel link")
 		 		channelID = crawlForChannelID(channel)
 		 		channelName = ytRSS.check_reserved(crawlForUserName(channel))
-		 	elif channel_split[len(channel_split)-2] == "c" or channel_split[len(channel_split)-2] == "user" :
+		 	elif channel_split[linkID_index] == "c" or channel_split[linkID_index] == "user" :
 		 		print("Detected as user link")
 		 		channelID = crawlForChannelID(channel)
 		 		channelName = ytRSS.check_reserved(crawlForUserName(channel))
