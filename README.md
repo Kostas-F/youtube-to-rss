@@ -7,6 +7,13 @@ Since the subscriptions tab and the little bell that you need to click to **actu
 
 Youtube used to have a button to do this but now I can't seem to find a way to follow a channel via RSS. 
 
+## tl;dr 
+
+1. `git clone https://github.com/Kostas-F/youtube-to-rss`
+2. `cd ./youtube-to-rss`
+    - If creating a channel list csv: `pip install -r requirements.txt` and `python3 channelsToCSV.py`
+3. `python3 youtubeToRSS.py`
+
 ## How to get an rss feed for a youtube channel
 To get a channels RSS feed:
 
