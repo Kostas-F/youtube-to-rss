@@ -49,9 +49,10 @@ This script will work with any csv that contains channel IDs and names but by de
 ## How to use channelID extraction script
 
 1. Download _both_ scripts in a directory you have permissions to write to.
-2. Run the script by running the command `python3 channelsToCSV.py` in your terminal. You need to have [python3 installed](https://realpython.com/installing-python/).
-3. Point the script to a textfile with links in each line. Links can point to channels or individual videos. You can also add them one by one.
-4. Use the resulting .csv file with `youtubeToRSS.py`.
+2. To run the script you need to have [python3 installed](https://realpython.com/installing-python/). Also you need to run `pip install -r requirements.txt` in the directory you downloaded the scripts to install any missing modules you may not have installed (at this point probably only urlib3)
+3. Run the script by running the command `python3 channelsToCSV.py` in your terminal.
+4. Point the script to a textfile with links in each line. Links can point to channels or individual videos. You can also add them one by one.
+5. Use the resulting .csv file with `youtubeToRSS.py`.
 
 ## What does it do ?
 This script is mostly user interaction fluff. Basically it looks for a .csv file with a collumn of channel IDs and another of channel names. It then creates the rss links as described above, uses the channel names to create seperate folders and finally formats them as a basic opml/xml file to import them in a reader. By default it places each channel in its own folder but, if this is not the desired behaviour, there is a function called `add_channel_nofolder` commmented out in the code. To use that one and have all the channels in a single folder comment out the `add_channel` function, uncommnent the `add_channel_nofolder` and rename it to `add_channel` (I may add this as a choice in user dialog in the future). If you use that option there is no need to have channel names in your csv.
