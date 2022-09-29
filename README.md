@@ -1,1 +1,1 @@
-This is the branch used to develop the chanell list script.
+This is the branch used to develop the channel list script.
