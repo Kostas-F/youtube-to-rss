@@ -3,26 +3,22 @@ import os,csv
 # Use ANSI to print red text for errors
 def printRed(text): print("\033[91m {}\033[00m".format(text))
 
-# Checking for xml reserved characters
+# Checking for xml reserved characters and replacing
 def check_reserved(name):
-  # It is important to check for ampersand first
+  # Check for ampersand first !
   xml_reserves=['&','<','>','\'','\"']
   xml_entites =["&amp;","&lt;","&gt;","&apos;","&quot;"]
   index = 0
   ind_replace=[]
   for ch in xml_reserves:
-    # Traversing sting and saving index of reserved char to list
-    # in order to catch possible multiple uses of reserved char in
-    # the string
+    # Save every index of ch in name 
     while index < len(name):
       index = name.find(ch, index)
       if index == -1:
         break
       ind_replace.append(index)
       index+=1
-    # Reversing the string to replace from end to start, in order to
-    # use the previously indexed locations without adding the length 
-    # of the enties each time and for each type.  
+    # Replace from end to start so index stays the same
     ind_replace.reverse()
     for ind_r in ind_replace:
       name = name[0:ind_r]+xml_entites[xml_reserves.index(ch)]+name[ind_r+1:]
@@ -32,8 +28,8 @@ def check_reserved(name):
   return name
 
 # Starting a simple opml file with a folder
-def preamble(file):
-  file.write("<opml version=\"2.0\">\n<body>\n<outline text=\"Youtube Subscriptions\" title=\"Youtube Subscriptions\">\n") 
+def preamble(file,title):
+  file.write("<opml version=\"2.0\">\n<body>\n<outline text=\""+title+"\" title=\""+title+"\">\n") 
 
 # Adding a youtube channel feed with its own subfolder
 def add_channel(chanel_name,file,channel_ids,channel_names):
@@ -42,37 +38,39 @@ def add_channel(chanel_name,file,channel_ids,channel_names):
   file.write("</outline>\n")  
 
 # Adding a youtube channel feed without a folder
-# def add_channel_nofolder(chanel_name,file):
-#   file.write("<outline type=\"rss\" xmlUrl='https://www.youtube.com/feeds/videos.xml?channel_id="+channel_ids[channel_names.index(chanel_name)]+"'/>\n")
+def add_channel_nofolder(chanel_name,file,channel_ids,channel_names):
+ file.write("<outline type=\"rss\" xmlUrl='https://www.youtube.com/feeds/videos.xml?channel_id="+channel_ids[channel_names.index(chanel_name)]+"'/>\n")
 
 # Ending the opml file
 def afterword(file):
   file.write("</outline>\n</body>\n</opml>")
 
 def run():
+  
   # Initializing script variables
   channel_ids   = []
   channel_names = []
   loop          = True
+  
   # Default filename to create. Used in user dialog.
   opmlfilename="youtube-subscriptions.opml"
+  
   # Some lists to check user input
   yes = ["Y","y","YES","yes",""] #empty string to use as default when pressing enter.
   no  = ["N","n","NO","no"]
 
-  # Script default values for navigating file, *assuming file from google takeout*.
+  # Defaults
   default    = True
   adding     = False
   header     = True
+  folders    = True
   ID_index   = 0
   NAME_index = 2
+  
   ## Script start
-  # The loops serve to limit errors and get usable input from the user.
   while loop:
     print("Enter csv filename. If the file is in a different directory press q.")
-    # Limiting imput to current director to handle errors.
-    # Also assuming no familiarity with python or scripts and where they run etc.
-    # Or thats what I intend anyway
+    
     subs_csv = os.path.dirname(os.path.abspath(__file__)) +"/"+ input( os.path.dirname(os.path.abspath(__file__))+"/")
     if subs_csv==os.path.dirname(os.path.abspath(__file__)) +"/"+ "q" :
       print("Enter full path to subscription csv. q to exit")
@@ -98,9 +96,10 @@ def run():
     else:
       if(dftl_chk in no):
         default=False
+        print("Give some info on the file.\n")
         loop=False
       elif(dftl_chk in yes):
-        print("Assuming the file has a header, channel ids are in collumn 0 and names in collumn 2.")
+        print("Assuming csv from google takeout. (header, ids in collumn 0, names in collumn 2)\n")
         loop=False
       else:
         printRed("Please enter Y or n.")  
@@ -117,10 +116,10 @@ def run():
         if(header_chk in no):
           header=False
           loop=False
-          print("Handling csv as if no header exits.")
+          print("Handling csv as if no header exits.\n")
         elif(header_chk in yes):
           loop=False
-          print("Handling csv as if it has a header.")
+          print("Handling csv as if it has a header.\n")
         else:
           printRed("Please enter Y or n")
 
@@ -135,7 +134,7 @@ def run():
       except Exception as e:
         printRed(e)
       else:
-        print("Looking for channel ids in collumn number"+str(ID_index))
+        print("Looking for channel ids in collumn number "+str(ID_index)+"\n")
         loop=False
       
     loop=True
@@ -149,8 +148,26 @@ def run():
       except Exception as e:
         printRed(e)
       else:
-        print("Looking for channel names in collumn number"+str(NAME_index))
+        print("Looking for channel names in collumn number "+str(NAME_index)+"\n")
         loop=False
+
+  print("Do you want channel feeds in individual folders in the opml file? ([Y]/n)")
+  loop=True
+  while loop:
+    try:
+      dftl_chk = input("")
+    except Exception as e:
+      printRed(e)
+    else:
+      if(dftl_chk in no):
+        folders=False
+        print("Placing every feed in a single folder.\n")
+        loop=False
+      elif(dftl_chk in yes):
+        print("Placing feeds in individual folders.\n")
+        loop=False
+      else:
+        printRed("Please enter Y or n.")  
 
   # Harvesting data from the csv file
   csvFile = csv.reader(file)
@@ -161,7 +178,7 @@ def run():
       channel_ids.append(line[ID_index])
       channel_names.append(check_reserved(line[NAME_index]))
     except IndexError as outBounds:
-      printRed("Collumn index out of range. Assuming EOF and empty line/s.")
+      print("Collumn index out of range. Assuming reached EOF and empty line/s. Continuing.\n")
   file.close()
   
   # Creating or adding to the opml file.
@@ -180,7 +197,8 @@ def run():
         loop=False    
     except FileExistsError as fileExists:
       if(count==0):
-        print("Found an oplml file (youtube-subscriptions.opml) possibly created previously.\nDo you want to attempt to add subscriptions (A) or create a new file [C] ?\nAdding to a file not created by this script will probably mess that file up.")
+        print("Found an oplml file (youtube-subscriptions.opml) possibly created previously.\nDo you want to attempt to add subscriptions (A) or create a new file [C] ?\n")
+        printRed("Adding to a file not created by this script will probably mess that file up.")
         # loop to get desired input
         while innerloop:
           try:
@@ -201,16 +219,19 @@ def run():
               printRed("Please enter A or C")
       count+=1
     except Exception as e:
+      print("Unexpected error. Exiting.\n")
       printRed(e)
-      print("Unexpected error. Exiting.")
       exit()
       
 
   if(not adding):
     # Create a new file from the csv data
-    preamble(rssfile)
+    preamble(rssfile,"Youtube Subscriptions")
     for channel in channel_names:
-      add_channel(channel,rssfile,channel_ids,channel_names)
+      if folders:
+        add_channel(channel,rssfile,channel_ids,channel_names)
+      else:
+        add_channel_nofolder(channel,rssfile,channel_ids,channel_names)
     afterword(rssfile)
     rssfile.close()
     print("Created a .opml file from the channels in the .csv \n"+os.path.dirname(os.path.abspath(__file__))+"/"+opmlfilename+"\nYou can now add the channels to an rss reader.")
@@ -229,7 +250,10 @@ def run():
       for i in range(0,linenum-1):
         newrssfile.write(oldrss[i])
       for channel in channel_names:
-        add_channel(channel,newrssfile,channel_ids,channel_names)
+        if folders:
+          add_channel(channel,newrssfile,channel_ids,channel_names)
+        else:
+          add_channel_nofolder(channel,newrssfile,channel_ids,channel_names)
       afterword(newrssfile)
     os.remove("youtube-subscriptions.opml")
     os.rename("youtube-subscriptions.opml.tmp", "youtube-subscriptions.opml")
