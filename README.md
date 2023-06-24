@@ -35,12 +35,12 @@ Scripts to help add a youtube subscription feed to an RSS reader.
 :warning: This may be slow depending on your connection speed and number of links. 
 
 
-## How to get manually get an rss feed for a youtube channel
+## How to manually get an rss feed for a youtube channel
 To get a channels RSS feed:
 
 1. Go to the channel you want to follow
 2. Find the channel ID
-  - If the url looks like this: `https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw` then the ID is the random string after channelb (ie `UCYO_jab_esuFRV4b17AJtAw`)
+  - If the url looks like this: `https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw` then the ID is the random string after channel/ (ie `UCYO_jab_esuFRV4b17AJtAw`)
   - If the url has a username like this `https://www.youtube.com/user/USERNAME` you can find their ID by
       * Viewing the page source (Ctrl+U)
       * Search the page (Ctrl+F) for `external_id` or `channel_id` or simply `youtube/channel/` and copy the string that follows.
