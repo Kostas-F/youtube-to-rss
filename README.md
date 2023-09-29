@@ -8,6 +8,7 @@ Scripts to help add a youtube subscription feed to an RSS reader.
 2. `cd ./youtube-to-rss`
     - If creating a channel list csv: `pip install -r requirements.txt` and `python3 channelsToCSV.py`
 3. `python3 youtubeToRSS.py`
+4. add the opml file to the reader you want to use
 
 ## How to use youtubeToRSS
 <img align="right" src="./scriptuse.gif" title="Best case scenario">
